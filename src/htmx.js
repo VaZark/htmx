@@ -1094,8 +1094,13 @@ return (function () {
         }
 
         function selectAndSwap(swapStyle, target, elt, responseText, settleInfo, selectOverride) {
-            settleInfo.title = findTitle(responseText);
-            var fragment = makeFragment(responseText);
+            var fragment = null;
+            if(responseText instanceof DocumentFragment) {
+                fragment = responseText;
+            } else {
+                settleInfo.title = findTitle(responseText);
+                fragment = makeFragment(responseText);
+            }
             if (fragment) {
                 handleOutOfBandSwaps(elt, fragment, settleInfo);
                 fragment = maybeSelectFromResponse(elt, fragment, selectOverride);
